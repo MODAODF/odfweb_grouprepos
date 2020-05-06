@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {ChangeEvent, Component, FormEvent} from 'react';
 
-import {Api, Folder, Group, ManageRuleProps, OCSGroup, OCSUser} from './Api';
+import {Api, Folder, Group, User, ManageRuleProps, OCSGroup, OCSUser} from './Api';
 import {FolderGroups} from './FolderGroups';
 import {QuotaSelect} from './QuotaSelect';
 import './App.scss';
@@ -10,52 +10,60 @@ import {SortArrow} from "./SortArrow";
 import FlipMove from "react-flip-move";
 import AsyncSelect from 'react-select/async'
 import Thenable = JQuery.Thenable;
+import { FolderUsers } from './FolderUsers';
 
 const defaultQuotaOptions = {
-	'1 GB': 1073741274,
-	'5 GB': 5368709120,
-	'10 GB': 10737412742,
-	'Unlimited': -3
+    '1 GB': 1073741274,
+    '5 GB': 5368709120,
+    '10 GB': 10737412742,
+    'Unlimited': -3
 };
 
 export type SortKey = 'mount_point' | 'quota' | 'groups' | 'acl';
 
 export interface AppState {
-	folders: Folder[];
-	groups: Group[],
-	newMountPoint: string;
-	editingGroup: number;
-	editingMountPoint: number;
-	renameMountPoint: string;
-	filter: string;
-	sort: SortKey;
-	sortOrder: number;
+    folders: Folder[];
+    groups: Group[];
+    users: User[];
+    newMountPoint: string;
+    editingGroup: number;
+    editingUser: number;
+    editingMountPoint: number;
+    renameMountPoint: string;
+    filter: string;
+    sort: SortKey;
+    sortOrder: number;
 }
 
 export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.Core> {
-	api = new Api();
+    api = new Api();
 
-	state: AppState = {
-		folders: [],
-		groups: [],
-		newMountPoint: '',
-		editingGroup: 0,
-		editingMountPoint: 0,
-		renameMountPoint: '',
-		filter: '',
-		sort: 'mount_point',
-		sortOrder: 1
-	};
+    state: AppState = {
+        folders: [],
+        groups: [],
+        users: [],
+        newMountPoint: '',
+        editingGroup: 0,
+        editingUser: 0,
+        editingMountPoint: 0,
+        renameMountPoint: '',
+        filter: '',
+        sort: 'mount_point',
+        sortOrder: 1
+    };
 
-	componentDidMount() {
-		this.api.listFolders().then((folders) => {
-			this.setState({folders});
-		});
-		this.api.listGroups().then((groups) => {
-			this.setState({groups});
-		});
-		OC.Plugins.register('OCA.Search.Core', this);
-	}
+    componentDidMount() {
+        this.api.listFolders().then((folders) => {
+            this.setState({ folders });
+        });
+        this.api.listGroups().then((groups) => {
+            this.setState({ groups });
+        });
+        this.api.listUsers().then((users) => {
+            this.setState({ users });
+        });
+        OC.Plugins.register('OCA.Search.Core', this);
+    }
 
 	createRow = (event: FormEvent) => {
 		event.preventDefault();
@@ -69,6 +77,7 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
 			folders.push({
 				mount_point: mountPoint,
 				groups: {},
+                users: {},
 				quota: -3,
 				size: 0,
 				id,
@@ -79,11 +88,11 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
 		});
 	};
 
-	attach = (search: OC.Search.Core) => {
-		search.setFilter('settings', (query) => {
-			this.setState({filter: query});
-		});
-	};
+    attach = (search: OC.Search.Core) => {
+        search.setFilter('settings', (query) => {
+            this.setState({filter: query});
+        });
+    };
 
 	deleteFolder(folder: Folder) {
 		OC.dialogs.confirm(
@@ -99,240 +108,280 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
 		);
 	};
 
-	addGroup(folder: Folder, group: string) {
-		const folders = this.state.folders;
-		folder.groups[group] = OC.PERMISSION_ALL;
-		this.setState({folders});
-		this.api.addGroup(folder.id, group);
-	}
+    addGroup(folder: Folder, group: string) {
+        const folders = this.state.folders;
+        folder.groups[group] = OC.PERMISSION_ALL;
+        this.setState({ folders });
+        this.api.addGroup(folder.id, group);
+    }
 
-	removeGroup(folder: Folder, group: string) {
-		const folders = this.state.folders;
-		delete folder.groups[group];
-		this.setState({folders});
-		this.api.removeGroup(folder.id, group);
-	}
+    removeGroup(folder: Folder, group: string) {
+        const folders = this.state.folders;
+        delete folder.groups[group];
+        this.setState({ folders });
+        this.api.removeGroup(folder.id, group);
+    }
 
-	setPermissions(folder: Folder, group: string, newPermissions: number) {
-		const folders = this.state.folders;
-		folder.groups[group] = newPermissions;
-		this.setState({folders});
-		this.api.setPermissions(folder.id, group, newPermissions);
-	}
+    addUser(folder: Folder, user: string) {
+        const folders = this.state.folders;
+        folder.users[user] = OC.PERMISSION_ALL;
+        this.setState({folders});
+        this.api.addUser(folder.id, user);
+    }
 
-	setManageACL(folder: Folder, type: string, id: string, manageACL: boolean) {
-		this.api.setManageACL(folder.id, type, id, manageACL);
-	}
+    removeUser(folder: Folder, user: string) {
+        const folders = this.state.folders;
+        delete folder.users[user];
+        this.setState({folders});
+        this.api.removeUser(folder.id, user);
+    }
 
-	searchMappings(folder: Folder, search: string) {
-		return this.api.aclMappingSearch(folder.id, search)
-	}
+    setPermissions(folder: Folder, group: string, newPermissions: number) {
+        const folders = this.state.folders;
+        folder.groups[group] = newPermissions;
+        this.setState({ folders });
+        this.api.setPermissions(folder.id, group, newPermissions);
+    }
 
-	setQuota(folder: Folder, quota: number) {
-		const folders = this.state.folders;
-		folder.quota = quota;
-		this.setState({folders});
-		this.api.setQuota(folder.id, quota);
-	}
+    setPermissionsForUser(folder: Folder, user: string, newPermissions: number) {
+        const folders = this.state.folders;
+        folder.users[user] = newPermissions;
+        this.setState({ folders });
+        this.api.setPermissions(folder.id, user, newPermissions);
+    }
 
-	renameFolder(folder: Folder, newName: string) {
-		const folders = this.state.folders;
-		folder.mount_point = newName;
-		this.setState({folders, editingMountPoint: 0});
-		this.api.renameFolder(folder.id, newName);
-	}
+    setManageACL(folder: Folder, type: string, id: string, manageACL: boolean) {
+        this.api.setManageACL(folder.id, type, id, manageACL);
+    }
 
-	setAcl(folder: Folder, acl: boolean) {
-		const folders = this.state.folders;
-		folder.acl = acl;
-		this.setState({folders});
-		this.api.setACL(folder.id, acl);
-	}
+    searchMappings(folder: Folder, search: string) {
+        return this.api.aclMappingSearch(folder.id, search)
+    }
 
-	onSortClick = (sort: SortKey) => {
-		if (this.state.sort === sort) {
-			this.setState({sortOrder: -this.state.sortOrder});
-		} else {
-			this.setState({sortOrder: 1, sort});
-		}
-	};
+    setQuota(folder: Folder, quota: number) {
+        const folders = this.state.folders;
+        folder.quota = quota;
+        this.setState({ folders });
+        this.api.setQuota(folder.id, quota);
+    }
 
-	static supportACL(): boolean {
-		return parseInt(OC.config.version,10) >= 16;
-	}
+    renameFolder(folder: Folder, newName: string) {
+        const folders = this.state.folders;
+        folder.mount_point = newName;
+        this.setState({ folders, editingMountPoint: 0 });
+        this.api.renameFolder(folder.id, newName);
+    }
 
-	render() {
-		const rows = this.state.folders
-			.filter(folder => {
-				if (this.state.filter === '') {
-					return true;
-				}
-				return folder.mount_point.toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1;
-			})
-			.sort((a, b) => {
-				switch (this.state.sort) {
-					case "mount_point":
-						return a.mount_point.localeCompare(b.mount_point) * this.state.sortOrder;
-					case "quota":
-						if (a.quota < 0 && b.quota >= 0) {
-							return this.state.sortOrder;
-						}
-						if (b.quota < 0 && a.quota >= 0) {
-							return -this.state.sortOrder;
-						}
-						return (a.quota - b.quota) * this.state.sortOrder;
-					case "groups":
-						return (Object.keys(a.groups).length - Object.keys(b.groups).length) * this.state.sortOrder;
-					case "acl":
-						if (a.acl && !b.acl) {
-							return this.state.sortOrder;
-						}
-						if (!a.acl && b.acl) {
-							return -this.state.sortOrder;
-						}
-						return 0;
-				}
-			})
-			.map(folder => {
-				const id = folder.id;
-				return <tr key={id}>
-					<td className="mountpoint">
-						{this.state.editingMountPoint === id ?
-							<SubmitInput
-								autoFocus={true}
-								onSubmitValue={this.renameFolder.bind(this, folder)}
-								onClick={event => {
-									event.stopPropagation();
-								}}
-								initialValue={folder.mount_point}
-							/> :
-							<a
-								className="action-rename"
-								onClick={event => {
-									event.stopPropagation();
-									this.setState({editingMountPoint: id})
-								}}
-							>
-								{folder.mount_point}
-							</a>
-						}
-					</td>
-					<td className="groups">
-						<FolderGroups
-							edit={this.state.editingGroup === id}
-							showEdit={event => {
-								event.stopPropagation();
-								this.setState({editingGroup: id})
-							}}
-							groups={folder.groups}
-							allGroups={this.state.groups}
-							onAddGroup={this.addGroup.bind(this, folder)}
-							removeGroup={this.removeGroup.bind(this, folder)}
-							onSetPermissions={this.setPermissions.bind(this, folder)}
-						/>
-					</td>
-					<td className="quota">
-						<QuotaSelect options={defaultQuotaOptions}
-									 value={folder.quota}
-									 size={folder.size}
-									 onChange={this.setQuota.bind(this, folder)}/>
-					</td>
-					<td className="acl">
-						<input id={`acl-${folder.id}`} type="checkbox" className="checkbox" checked={folder.acl} disabled={!App.supportACL()}
-							   title={
-							   	App.supportACL()?
-									t('groupfolders', 'Advanced permissions allows setting permissions on a per-file basis but comes with a performance overhead'):
-									t('groupfolders', 'Advanced permissions are only supported with Nextcloud 16 and up')}
-							   onChange={(event) => this.setAcl(folder, event.target.checked)}
-						/>
-						<label htmlFor={`acl-${folder.id}`}></label>
-						{folder.acl &&
-							<ManageAclSelect
-								folder={folder}
-								onChange={this.setManageACL.bind(this, folder)}
-								onSearch={this.searchMappings.bind(this, folder)}
-							/>
-						}
-					</td>
-					<td className="remove">
-						<a className="icon icon-delete icon-visible"
-						   onClick={this.deleteFolder.bind(this, folder)}
-						   title={t('groupfolders', 'Delete')}/>
-					</td>
-				</tr>
-			});
+    setAcl(folder: Folder, acl: boolean) {
+        const folders = this.state.folders;
+        folder.acl = acl;
+        this.setState({ folders });
+        this.api.setACL(folder.id, acl);
+    }
 
-		return <div id="groupfolders-react-root"
-					onClick={() => {
-						this.setState({editingGroup: 0, editingMountPoint: 0})
-					}}>
-			<table>
-				<thead>
-				<tr>
-					<th onClick={() => this.onSortClick('mount_point')}>
-						{t('groupfolders', 'Folder name')}
-						<SortArrow name='mount_point' value={this.state.sort}
-								   direction={this.state.sortOrder}/>
-					</th>
-					<th onClick={() => this.onSortClick('groups')}>
-						{t('groupfolders', 'Groups')}
-						<SortArrow name='groups' value={this.state.sort}
-								   direction={this.state.sortOrder}/>
-					</th>
-					<th onClick={() => this.onSortClick('quota')}>
-						{t('groupfolders', 'Quota')}
-						<SortArrow name='quota' value={this.state.sort}
-								   direction={this.state.sortOrder}/>
-					</th>
-					<th onClick={() => this.onSortClick('acl')}>
-						{t('groupfolders', 'Advanced Permissions')}
-						<SortArrow name='acl' value={this.state.sort}
-								   direction={this.state.sortOrder}/>
-					</th>
-					<th/>
-				</tr>
-				</thead>
-				<FlipMove typeName='tbody' enterAnimation="accordionVertical" leaveAnimation="accordionVertical">
-					{rows}
-					<tr>
-						<td>
-							<form action="#" onSubmit={this.createRow}>
-								<input
-									className="newgroup-name"
-									value={this.state.newMountPoint}
-									placeholder={t('groupfolders', 'Folder name')}
-									onChange={(event) => {
-										this.setState({newMountPoint: event.target.value})
-									}}/>
-								<input type="submit"
-									   value={t('groupfolders', 'Create')}/>
-							</form>
-						</td>
-						<td colSpan={3}/>
-					</tr>
-				</FlipMove>
-			</table>
-		</div>;
-	}
+    onSortClick = (sort: SortKey) => {
+        if (this.state.sort === sort) {
+            this.setState({ sortOrder: -this.state.sortOrder });
+        } else {
+            this.setState({ sortOrder: 1, sort });
+        }
+    };
+
+    static supportACL(): boolean {
+        return parseInt(OC.config.version, 10) >= 16;
+    }
+
+    render() {
+        const rows = this.state.folders
+            .filter(folder => {
+                if (this.state.filter === '') {
+                    return true;
+                }
+                return folder.mount_point.toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1;
+            })
+            .sort((a, b) => {
+                switch (this.state.sort) {
+                    case "mount_point":
+                        return a.mount_point.localeCompare(b.mount_point) * this.state.sortOrder;
+                    case "quota":
+                        if (a.quota < 0 && b.quota >= 0) {
+                            return this.state.sortOrder;
+                        }
+                        if (b.quota < 0 && a.quota >= 0) {
+                            return -this.state.sortOrder;
+                        }
+                        return (a.quota - b.quota) * this.state.sortOrder;
+                    case "groups":
+                        return (Object.keys(a.groups).length - Object.keys(b.groups).length) * this.state.sortOrder;
+                    case "acl":
+                        if (a.acl && !b.acl) {
+                            return this.state.sortOrder;
+                        }
+                        if (!a.acl && b.acl) {
+                            return -this.state.sortOrder;
+                        }
+                        return 0;
+                }
+            })
+            .map(folder => {
+                const id = folder.id;
+                return <tr key={id}>
+                    <td className="mountpoint">
+                        {this.state.editingMountPoint === id ?
+                            <SubmitInput
+                                autoFocus={true}
+                                onSubmitValue={this.renameFolder.bind(this, folder)}
+                                onClick={event => {
+                                    event.stopPropagation();
+                                }}
+                                initialValue={folder.mount_point}
+                            /> :
+                            <a
+                                className="action-rename"
+                                onClick={event => {
+                                    event.stopPropagation();
+                                    this.setState({ editingMountPoint: id })
+                                }}
+                            >
+                                {folder.mount_point}
+                            </a>
+                        }
+                    </td>
+                    <td className="groups">
+                        <FolderGroups
+                            edit={this.state.editingGroup === id}
+                            showEdit={event => {
+                                event.stopPropagation();
+                                this.setState({ editingGroup: id })
+                            }}
+                            groups={folder.groups}
+                            allGroups={this.state.groups}
+                            onAddGroup={this.addGroup.bind(this, folder)}
+                            removeGroup={this.removeGroup.bind(this, folder)}
+                            onSetPermissions={this.setPermissions.bind(this, folder)}
+                        />
+                    </td>
+                    <td className="users">
+                        <FolderUsers
+                            edit={this.state.editingUser === id}
+                            showEdit={event => {
+                                event.stopPropagation();
+                                this.setState({ editingUser: id })
+                            }}
+                            users={folder.users}
+                            allUsers={this.state.users}
+                            onAddUser={this.addUser.bind(this, folder)}
+                            removeUser={this.removeUser.bind(this, folder)}
+                            onSetPermissions={this.setPermissionsForUser.bind(this, folder)}
+                        />
+                    </td>
+                    <td className="quota">
+                        <QuotaSelect options={defaultQuotaOptions}
+                            value={folder.quota}
+                            size={folder.size}
+                            onChange={this.setQuota.bind(this, folder)} />
+                    </td>
+                    <td className="acl">
+                        <input id={`acl-${folder.id}`} type="checkbox" className="checkbox" checked={folder.acl} disabled={!App.supportACL()}
+                            title={
+                                App.supportACL() ?
+                                    t('groupfolders', 'Advanced permissions allows setting permissions on a per-file basis but comes with a performance overhead') :
+                                    t('groupfolders', 'Advanced permissions are only supported with Nextcloud 16 and up')}
+                            onChange={(event) => this.setAcl(folder, event.target.checked)}
+                        />
+                        <label htmlFor={`acl-${folder.id}`}></label>
+                        {folder.acl &&
+                            <ManageAclSelect
+                                folder={folder}
+                                onChange={this.setManageACL.bind(this, folder)}
+                                onSearch={this.searchMappings.bind(this, folder)}
+                            />
+                        }
+                    </td>
+                    <td className="remove">
+                        <a className="icon icon-delete icon-visible"
+                            onClick={this.deleteFolder.bind(this, folder)}
+                            title={t('groupfolders', 'Delete')} />
+                    </td>
+                </tr>
+            });
+
+        return <div id="groupfolders-react-root"
+            onClick={() => {
+                this.setState({ editingGroup: 0, editingUser: 0, editingMountPoint: 0 })
+            }}>
+            <table>
+                <thead>
+                    <tr>
+                        <th onClick={() => this.onSortClick('mount_point')}>
+                            {t('groupfolders', 'Folder name')}
+                            <SortArrow name='mount_point' value={this.state.sort}
+                                direction={this.state.sortOrder} />
+                        </th>
+                        <th onClick={() => this.onSortClick('groups')}>
+                            {t('groupfolders', 'Groups')}
+                            <SortArrow name='groups' value={this.state.sort}
+                                direction={this.state.sortOrder} />
+                        </th>
+                        <th onClick={() => this.onSortClick('groups')}>
+                            {t('groupfolders', 'Users')}
+                            <SortArrow name='users' value={this.state.sort}
+                                direction={this.state.sortOrder} />
+                        </th>
+                        <th onClick={() => this.onSortClick('quota')}>
+                            {t('groupfolders', 'Quota')}
+                            <SortArrow name='quota' value={this.state.sort}
+                                direction={this.state.sortOrder} />
+                        </th>
+                        <th onClick={() => this.onSortClick('acl')}>
+                            {t('groupfolders', 'Advanced Permissions')}
+                            <SortArrow name='acl' value={this.state.sort}
+                                direction={this.state.sortOrder} />
+                        </th>
+                        <th />
+                    </tr>
+                </thead>
+                <FlipMove typeName='tbody' enterAnimation="accordionVertical" leaveAnimation="accordionVertical">
+                    {rows}
+                    <tr>
+                        <td>
+                            <form action="#" onSubmit={this.createRow}>
+                                <input
+                                    className="newgroup-name"
+                                    value={this.state.newMountPoint}
+                                    placeholder={t('groupfolders', 'Folder name')}
+                                    onChange={(event) => {
+                                        this.setState({ newMountPoint: event.target.value })
+                                    }} />
+                                <input type="submit"
+                                    value={t('groupfolders', 'Create')} />
+                            </form>
+                        </td>
+                        <td colSpan={3} />
+                    </tr>
+                </FlipMove>
+            </table>
+        </div>;
+    }
 }
 
 
 interface ManageAclSelectProps {
-	folder: Folder;
-	onChange: (type: string, id: string, manageAcl: boolean) => void;
-	onSearch:  (name: string) => Thenable<{ groups: OCSGroup[]; users: OCSUser[]; }>;
+    folder: Folder;
+    onChange: (type: string, id: string, manageAcl: boolean) => void;
+    onSearch: (name: string) => Thenable<{ groups: OCSGroup[]; users: OCSUser[]; }>;
 };
 
 
 
-function ManageAclSelect({onChange, onSearch, folder}: ManageAclSelectProps) {
-	const handleSearch = (inputValue: string) => {
-		return new Promise(resolve => {
-			onSearch(inputValue).then((result) => {
-				resolve([...result.groups, ...result.users])
-			})
-		})
-	}
+function ManageAclSelect({ onChange, onSearch, folder }: ManageAclSelectProps) {
+    const handleSearch = (inputValue: string) => {
+        return new Promise(resolve => {
+            onSearch(inputValue).then((result) => {
+                resolve([...result.groups, ...result.users])
+            })
+        })
+    }
 
 	const typeLabel = (item) => {
 		return item.type === 'user' ? 'User' : 'Group'

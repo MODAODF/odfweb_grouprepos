@@ -1,8 +1,13 @@
-import {OCSResult} from "NC";
+import { OCSResult } from "NC";
 import Thenable = JQuery.Thenable;
-import {FolderGroupsProps} from "./FolderGroups";
+import { FolderGroupsProps } from "./FolderGroups";
 
 export interface Group {
+	id: string;
+	displayname: string;
+}
+
+export interface User {
 	id: string;
 	displayname: string;
 }
@@ -30,6 +35,7 @@ export interface Folder {
 	quota: number;
 	size: number;
 	groups: { [group: string]: number };
+	users: { [user: string]: number };
 	acl: boolean;
 	manage: ManageRuleProps[];
 }
@@ -47,6 +53,29 @@ export class Api {
 	listGroups(): Thenable<Group[]> {
 		return $.getJSON(this.getUrl('delegation/groups'))
 			.then((data: OCSResult<Group[]>) => data.ocs.data);
+	}
+
+	listUsers(): Thenable<User[]> {
+		const version = parseInt(OC.config.version, 10);
+		if (version >= 14) {
+			return $.getJSON(OC.linkToOCS('cloud', 1) + 'users/details')
+				.then((data: OCSResult<{ users: User[]; }>) => {
+					// 讓 user[] 的型態轉為 Array
+					let tmp: User[] = [];
+					for (var x in data.ocs.data.users) {
+						tmp.push(data.ocs.data.users[x]);
+					}
+					return tmp;
+				});
+		} else {
+			return $.getJSON(OC.linkToOCS('cloud', 1) + 'users')
+				.then((data: OCSResult<{ users: string[]; }>) => data.ocs.data.users.map(user => {
+					return {
+						id: user,
+						displayname: user
+					};
+				}));
+		}
 	}
 
 	createFolder(mountPoint: string): Thenable<number> {
@@ -75,7 +104,26 @@ export class Api {
 		});
 	}
 
-	setPermissions(folderId: number, group: string, permissions: number): Thenable<void> {
+	addUser(folderId: number, user: string): Thenable<void> {
+		return $.post(this.getUrl(`folders/${folderId}/users`), {
+			user
+		});
+	}
+
+	removeUser(folderId: number, user: string): Thenable<void> {
+		return $.ajax({
+			url: this.getUrl(`folders/${folderId}/users/${user}`),
+			type: 'DELETE'
+		});
+	}
+
+	setPermissions(folderId: number, user: string, permissions: number): Thenable<void> {
+		return $.post(this.getUrl(`folders/${folderId}/users/${user}`), {
+			permissions
+		});
+	}
+
+	setPermissionsForUser(folderId: number, group: string, permissions: number): Thenable<void> {
 		return $.post(this.getUrl(`folders/${folderId}/groups/${group}`), {
 			permissions
 		});
@@ -107,7 +155,7 @@ export class Api {
 		});
 	}
 
-	aclMappingSearch(folderId: number, search: string): Thenable<{groups: OCSGroup[], users: OCSUser[]}> {
+	aclMappingSearch(folderId: number, search: string): Thenable<{ groups: OCSGroup[], users: OCSUser[] }> {
 		return $.getJSON(this.getUrl(`folders/${folderId}/search?format=json&search=${search}`))
 			.then((data: OCSResult<{ groups: OCSGroup[]; users: OCSUser[]; }>) => {
 				return {
