@@ -94,4 +94,9 @@ return ['routes' => [
 		'url' => '/delegation/authorized-groups',
 		'verb' => 'GET',
 	],
+	[
+		'name' => 'Folder#getFolderList',
+		'url' => '/folderlist',
+		'verb' => 'GET'
+	],
 ]];
