@@ -196,6 +196,15 @@ class Application extends App implements IBootstrap {
 			});
 			$cacheListener->listen();
 		});
+
+		\OCA\Files\App::getNavigationManager()->add([
+			'id' => 'groupreposslist',
+			'appname' => 'grouprepos',
+			'script' => 'list.php',
+			'order' => 25,
+			'name' => "群組資料夾",
+			'icon' => "grouprepos"
+		]);
 	}
 
 	public function getMountProvider(): MountProvider {

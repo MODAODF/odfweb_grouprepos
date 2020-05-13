@@ -88,5 +88,10 @@ return ['routes' => [
 		'name' => 'Delegation#getAllGroups',
 		'url' => 'delegation/groups',
 		'verb' => 'GET'
+	],
+	[
+		'name' => 'Folder#getFolderList',
+		'url' => '/folderlist',
+		'verb' => 'GET'
 	]
 ]];

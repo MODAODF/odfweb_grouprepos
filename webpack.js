@@ -9,7 +9,10 @@ webpackConfig.entry = {
 		'./src/settings/index.tsx'
 	],
 	files: [
-		'./src/files.js'
+		'./src/files.js',
+		'./src/files.js',
+		'./src/groupfoldersfilelist.js',
+		'./src/groupfoldersplugin.js'
 	]
 }
 
