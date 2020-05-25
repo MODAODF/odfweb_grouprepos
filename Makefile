@@ -75,4 +75,3 @@ appstore: clean build/main.js
 		echo "Signing package…"; \
 		openssl dgst -sha512 -sign $(cert_dir)/$(app_name).key $(build_dir)/$(app_name)-$(version).tar.gz | openssl base64; \
 	fi
-
