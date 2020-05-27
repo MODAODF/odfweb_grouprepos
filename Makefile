@@ -9,15 +9,18 @@ package_name=$(app_name)
 cert_dir=$(HOME)/.nextcloud/certificates
 webpack=node_modules/.bin/webpack
 version+=1.0.0
+BRANCH:=$(shell cat dist_git_branch 2> /dev/null || git rev-parse --abbrev-ref HEAD 2> /dev/null)
 
 jssources=$(wildcard js/*) $(wildcard js/*/*) $(wildcard css/*/*)  $(wildcard css/*)
 othersources=$(wildcard appinfo/*) $(wildcard css/*/*) $(wildcard controller/*/*) $(wildcard templates/*/*) $(wildcard log/*/*)
 
 all: build/main.js
 
+test:
+	@touch $(BRANCH).txt
 clean:
 	rm -rf $(sign_dir)
-	rm -rf $(build_dir)/$(app_name)-$(version).tar.gz
+	rm -rf $(build_dir)/$(app_name)-$(version)-$(BRANCH).tar.gz
 	rm -rf node_modules
 
 node_modules: package.json
@@ -33,8 +36,8 @@ watch: node_modules
 release: appstore create-tag
 
 create-tag:
-	git tag -a v$(version) -m "Tagging the $(version) release."
-	git push origin v$(version)
+	git tag -a $(BRANCH)-$(version) -m "Tagging the $(BRANCH)-$(version) release."
+	git push origin $(BRANCH)-$(version)
 
 appstore: clean build/main.js
 	mkdir -p $(sign_dir)
@@ -69,9 +72,5 @@ appstore: clean build/main.js
 	--exclude=/vendor \
 	--exclude=/webpack.* \
 	$(project_dir)/ $(sign_dir)/$(app_name)
-	tar -czf $(build_dir)/$(app_name)-$(version).tar.gz \
+	tar -czf $(build_dir)/$(app_name)-$(version)-$(BRANCH).tar.gz \
 		-C $(sign_dir) $(app_name)
-	@if [ -f $(cert_dir)/$(app_name).key ]; then \
-		echo "Signing package…"; \
-		openssl dgst -sha512 -sign $(cert_dir)/$(app_name).key $(build_dir)/$(app_name)-$(version).tar.gz | openssl base64; \
-	fi
