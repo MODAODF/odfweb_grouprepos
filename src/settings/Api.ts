@@ -117,13 +117,13 @@ export class Api {
 	}
 
 	setPermissions(folderId: number, user: string, permissions: number): Thenable<void> {
-		return $.post(this.getUrl(`folders/${folderId}/users/${user}`), {
+		return $.post(this.getUrl(`folders/${folderId}/groups/${user}`), {
 			permissions
 		});
 	}
 
 	setPermissionsForUser(folderId: number, group: string, permissions: number): Thenable<void> {
-		return $.post(this.getUrl(`folders/${folderId}/groups/${group}`), {
+		return $.post(this.getUrl(`folders/${folderId}/users/${group}`), {
 			permissions
 		});
 	}

@@ -146,7 +146,7 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
         const folders = this.state.folders;
         folder.users[user] = newPermissions;
         this.setState({ folders });
-        this.api.setPermissions(folder.id, user, newPermissions);
+        this.api.setPermissionsForUser(folder.id, user, newPermissions);
     }
 
     setQuota(folder: Folder, quota: number) {
@@ -288,7 +288,9 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
                             <SortArrow name='quota' value={this.state.sort}
                                 direction={this.state.sortOrder} />
                         </th>
-                        <th />
+                        <th>
+                            刪除
+                        </th>
                     </tr>
                 </thead>
                 <FlipMove typeName='tbody' enterAnimation="accordionVertical" leaveAnimation="accordionVertical">
