@@ -76,7 +76,7 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
 			const folders = this.state.folders;
 			folders.push({
 				mount_point: mountPoint,
-				groups: {},
+				groups: {admin:OC.PERMISSION_ALL},
                 users: {},
                 quota: -3,
                 size: 0,
@@ -84,6 +84,10 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
                 manage: []
             });
             this.setState({folders});
+
+            //預設新增 admin 群組可瀏覽
+            this.api.addGroup(id,"admin");
+            this.api.setPermissions(id, "admin", OC.PERMISSION_ALL);
         });
     };
 
@@ -109,7 +113,7 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
 
     addGroup(folder: Folder, group: string) {
         const folders = this.state.folders;
-        folder.groups[group] = OC.PERMISSION_ALL;
+        folder.groups[group] = OC.PERMISSION_READ;
         this.setState({ folders });
         this.api.addGroup(folder.id, group);
     }
