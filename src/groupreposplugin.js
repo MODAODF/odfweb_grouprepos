@@ -115,6 +115,5 @@
 
 
 })(OCA);
-
 OC.Plugins.register('OCA.Files.App', OCA.Files.GroupRepossPlugin);
 
