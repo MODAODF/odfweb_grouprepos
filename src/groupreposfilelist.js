@@ -22,82 +22,85 @@ $(document).ready(function () {
 		 * and a table
 		 * @param [options] map of options, see other parameters
 		 */
-		var GroupRepossFileList = function ($el, options) {
-			this.initialize($el, options);
-		};
-		GroupRepossFileList.prototype = _.extend({}, OCA.Files.FileList.prototype,
-			/** @lends OCA.Files.GroupRepossFileList.prototype */ {
-				id: 'groupreposslist',
-				appName: t('files', 'GroupRepos'),
+		if (OCA.Files.FileList) {
+			var GroupRepossFileList = function ($el, options) {
+				this.initialize($el, options);
+			};
+			GroupRepossFileList.prototype = _.extend({}, OCA.Files.FileList.prototype,
+				/** @lends OCA.Files.GroupRepossFileList.prototype */ {
+					id: 'groupreposslist',
+					appName: t('files', 'GroupRepos'),
 
-				_clientSideSort: true,
-				_allowSelection: false,
+					_clientSideSort: true,
+					_allowSelection: false,
 
-				/**
-				 * @private
-				 */
-				initialize: function ($el, options) {
-					OCA.Files.FileList.prototype.initialize.apply(this, arguments);
-					if (this.initialized) {
-						return;
-					}
-					OC.Plugins.attach('OCA.Files.GroupRepossFileList', this);
-					
-				},
+					/**
+					 * @private
+					 */
+					initialize: function ($el, options) {
+						OCA.Files.FileList.prototype.initialize.apply(this, arguments);
+						if (this.initialized) {
+							return;
+						}
+						OC.Plugins.attach('OCA.Files.GroupRepossFileList', this);
 
-				updateEmptyContent: function () {
-					var dir = this.getCurrentDirectory();
-					if (dir === '/') {
-						// root has special permissions
-						this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
-						this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
-					}
-					else {
-						OCA.Files.FileList.prototype.updateEmptyContent.apply(this, arguments);
-					}
-				},
+					},
 
-				getDirectoryPermissions: function () {
-					return OC.PERMISSION_READ | OC.PERMISSION_DELETE;
-				},
+					updateEmptyContent: function () {
+						var dir = this.getCurrentDirectory();
+						if (dir === '/') {
+							// root has special permissions
+							this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
+							this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
+						}
+						else {
+							OCA.Files.FileList.prototype.updateEmptyContent.apply(this, arguments);
+						}
+					},
 
-				updateStorageStatistics: function () {
-					// no op because it doesn't have
-					// storage info like free space / used space
-				},
+					getDirectoryPermissions: function () {
+						return OC.PERMISSION_READ | OC.PERMISSION_DELETE;
+					},
 
-				reload: function () {
-					this.showMask();
-					if (this._reloadCall) {
-						this._reloadCall.abort();
-					}
+					updateStorageStatistics: function () {
+						// no op because it doesn't have
+						// storage info like free space / used space
+					},
 
-					// there is only root
-					this._setCurrentDir('/', false);
+					reload: function () {
+						this.showMask();
+						if (this._reloadCall) {
+							this._reloadCall.abort();
+						}
 
-					this._reloadCall = $.ajax({
-						url: OC.generateUrl('/apps/grouprepos/folderlist'),
-						type: 'GET',
-						dataType: 'json'
-					});
-					var callBack = this.reloadCallback.bind(this);
-					return this._reloadCall.then(callBack, callBack);
-				},
+						// there is only root
+						this._setCurrentDir('/', false);
 
-				reloadCallback: function (result) {
-					delete this._reloadCall;
-					this.hideMask();
+						this._reloadCall = $.ajax({
+							url: OC.generateUrl('/apps/grouprepos/folderlist'),
+							type: 'GET',
+							dataType: 'json'
+						});
+						var callBack = this.reloadCallback.bind(this);
+						return this._reloadCall.then(callBack, callBack);
+					},
 
-					if (result.files) {
-						this.setFiles(result.files.sort(this._sortComparator));
-						return true;
-					}
-					return false;
-					
-				},
-			});
+					reloadCallback: function (result) {
+						delete this._reloadCall;
+						this.hideMask();
 
-		OCA.Files.GroupRepossFileList = GroupRepossFileList;
+						if (result.files) {
+							this.setFiles(result.files.sort(this._sortComparator));
+							return true;
+						}
+						return false;
+
+					},
+				});
+
+			OCA.Files.GroupRepossFileList = GroupRepossFileList;
+		}
+
 	})(OCA);
 });
 
