@@ -8,6 +8,7 @@
  *
  */
 
+/* eslint-disable */
 (function(OCA) {
 	/**
 	 * Registers the favorites file list from the files app sidebar.
@@ -23,7 +24,7 @@
 		grouprepossFileList: null,
 
 		attach: function () {
-			var self = this;
+			const self = this;
 			$('#app-content-groupreposslist').on('show.plugin-grouprepos', function (e) {
 				self.showFileList($(e.target));
 			});
@@ -62,7 +63,7 @@
 		 * @return {OCA.Files.GroupRepossFileList} file list
 		 */
 		_createGroupRepossFileList: function ($el) {
-			var fileActions = this._createFileActions();
+			const fileActions = this._createFileActions();
 			// register favorite list for sidebar section
 			return new OCA.Files.GroupRepossFileList(
 				$el, {
@@ -78,7 +79,7 @@
 
 		_createFileActions: function () {
 			// inherit file actions from the files app
-			var fileActions = new OCA.Files.FileActions();
+			const fileActions = new OCA.Files.FileActions();
 			// note: not merging the legacy actions because legacy apps are not
 			// compatible with the sharing overview and need to be adapted first
 			fileActions.registerDefaultActions();
@@ -116,4 +117,3 @@
 
 })(OCA);
 OC.Plugins.register('OCA.Files.App', OCA.Files.GroupRepossPlugin);
-

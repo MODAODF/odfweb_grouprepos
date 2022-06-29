@@ -8,6 +8,7 @@
  *
  */
 
+/* eslint-disable */
 // HACK: this piece needs to be loaded AFTER the files app (for unit tests)
 $(document).ready(function () {
 	(function (OCA) {
@@ -23,7 +24,7 @@ $(document).ready(function () {
 		 * @param [options] map of options, see other parameters
 		 */
 		if (OCA.Files.FileList) {
-			var GroupRepossFileList = function ($el, options) {
+			const GroupRepossFileList = function ($el, options) {
 				this.initialize($el, options);
 			};
 			GroupRepossFileList.prototype = _.extend({}, OCA.Files.FileList.prototype,
@@ -47,7 +48,7 @@ $(document).ready(function () {
 					},
 
 					updateEmptyContent: function () {
-						var dir = this.getCurrentDirectory();
+						const dir = this.getCurrentDirectory();
 						if (dir === '/') {
 							// root has special permissions
 							this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
@@ -83,7 +84,7 @@ $(document).ready(function () {
 							type: 'GET',
 							dataType: 'json'
 						});
-						var callBack = this.reloadCallback.bind(this);
+						const callBack = this.reloadCallback.bind(this);
 						return this._reloadCall.then(callBack, callBack);
 					},
 
@@ -96,13 +97,9 @@ $(document).ready(function () {
 							return true;
 						}
 						return false;
-
 					},
 				});
-
 			OCA.Files.GroupRepossFileList = GroupRepossFileList;
 		}
-
 	})(OCA);
 });
-
