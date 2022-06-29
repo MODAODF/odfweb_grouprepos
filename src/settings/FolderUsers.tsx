@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './FolderUsers.css';
+import './FolderUsers.scss';
 import { SyntheticEvent } from "react";
 import { Group, User } from "./Api";
 import Select from 'react-select'
@@ -62,7 +62,7 @@ export function FolderUsers({ users, allUsers = [], onAddUser, removeUser, edit,
 		});
 
 		return <table className="user-edit"
-			onClick={event => event.stopPropagation()}>
+					  onClick={event => event.stopPropagation()}>
 			<thead>
 				<tr>
 					<th>{t('grouprepos', 'User')}</th>
@@ -123,7 +123,7 @@ function UserSelect({ allUsers, onChange }: UserSelectProps) {
 
 	return <Select
 		onChange={option => {
-			onChange && onChange(option.value)
+			onChange && option && onChange(option.value)
 		}}
 		options={options}
 		placeholder={t('grouprepos', 'Add user')}
