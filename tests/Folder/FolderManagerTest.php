@@ -19,9 +19,9 @@
  *
  */
 
-namespace OCA\GroupFolders\Tests\Folder;
+namespace OCA\GroupRepos\Tests\Folder;
 
-use OCA\GroupFolders\Folder\FolderManager;
+use OCA\GroupRepos\Folder\FolderManager;
 use OCP\Constants;
 use OCP\Files\IMimeTypeLoader;
 use OCP\IDBConnection;
@@ -51,10 +51,10 @@ class FolderManagerTest extends TestCase {
 
 	private function clean() {
 		$query = \OC::$server->getDatabaseConnection()->getQueryBuilder();
-		$query->delete('group_folders')->execute();
+		$query->delete('group_repos')->execute();
 
 		$query = \OC::$server->getDatabaseConnection()->getQueryBuilder();
-		$query->delete('group_folders_groups')->execute();
+		$query->delete('group_repos_groups')->execute();
 	}
 
 	private function assertHasFolders($folders) {

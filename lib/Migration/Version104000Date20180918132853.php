@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\GroupFolders\Migration;
+namespace OCA\GroupRepos\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
@@ -14,19 +14,19 @@ use OCP\Migration\IOutput;
  */
 class Version104000Date20180918132853 extends SimpleMigrationStep {
 	public function name(): string {
-		return 'Add group_folders_trash table';
+		return 'Add group_repos_trash table';
 	}
 
 	public function description(): string {
-		return 'Adds table to store trashbin information for group folders';
+		return 'Adds table to store trashbin information for group repos';
 	}
 
 	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		if (!$schema->hasTable('group_folders_trash')) {
-			$table = $schema->createTable('group_folders_trash');
+		if (!$schema->hasTable('group_repos_trash')) {
+			$table = $schema->createTable('group_repos_trash');
 			$table->addColumn('trash_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,

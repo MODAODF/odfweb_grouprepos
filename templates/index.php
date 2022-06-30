@@ -1,8 +1,8 @@
-<?php script($_['appId'], ['groupfolders-settings']); ?>
+<?php script($_['appId'], ['grouprepos-settings']); ?>
 <div id="searchresults" style="display: none"></div>
-<div id="groupfolders-wrapper">
+<div id="grouprepos-wrapper">
 	<h2>
-		<?php p($l->t('Group folders')); ?>
+		<?php p($l->t('Group repos')); ?>
 	</h2>
-	<div id="groupfolders-root"/>
+	<div id="grouprepos-root"/>
 </div>

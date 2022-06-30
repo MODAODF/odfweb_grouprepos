@@ -24,7 +24,7 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\Migration;
+namespace OCA\GroupRepos\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
@@ -45,17 +45,17 @@ class Version1000000Date20210216085047 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		$table = $schema->getTable('group_folders_acl');
+		$table = $schema->getTable('group_repos_acl');
 		if ($table->hasIndex('groups_folder_acl_file')) {
 			$table->dropIndex('groups_folder_acl_file');
 		}
 
-		$table = $schema->getTable('group_folders_groups');
-		if ($table->hasIndex('group_folder')) {
-			$table->dropIndex('group_folder');
+		$table = $schema->getTable('group_repos_groups');
+		if ($table->hasIndex('group_repo')) {
+			$table->dropIndex('group_repo');
 		}
 
-		$table = $schema->getTable('group_folders_trash');
+		$table = $schema->getTable('group_repos_trash');
 		if ($table->hasIndex('groups_folder_trash_folder')) {
 			$table->dropIndex('groups_folder_trash_folder');
 		}

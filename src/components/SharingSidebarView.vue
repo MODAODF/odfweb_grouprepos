@@ -20,8 +20,8 @@
   -
   -->
 <template>
-	<div v-if="aclEnabled && !loading" id="groupfolder-acl-container">
-		<div class="groupfolder-entry">
+	<div v-if="aclEnabled && !loading" id="grouprepo-acl-container">
+		<div class="grouprepo-entry">
 			<div class="avatar icon-group-white" />
 			<span class="username" />
 		</div>
@@ -29,22 +29,22 @@
 			<thead>
 				<tr>
 					<th />
-					<th>{{ t('groupfolders', 'Group folder') }}</th>
-					<th v-tooltip="t('groupfolders', 'Read')" class="state-column">
-						{{ t('groupfolders', 'Read') }}
+					<th>{{ t('grouprepos', 'Group repo') }}</th>
+					<th v-tooltip="t('grouprepos', 'Read')" class="state-column">
+						{{ t('grouprepos', 'Read') }}
 					</th>
-					<th v-tooltip="t('groupfolders', 'Write')" class="state-column">
-						{{ t('groupfolders', 'Write') }}
+					<th v-tooltip="t('grouprepos', 'Write')" class="state-column">
+						{{ t('grouprepos', 'Write') }}
 					</th>
-					<th v-if="model.type === 'dir'" v-tooltip="t('groupfolders', 'Create')" class="state-column">
+					<th v-if="model.type === 'dir'" v-tooltip="t('grouprepos', 'Create')" class="state-column">
 						{{
-							t('groupfolders', 'Create') }}
+							t('grouprepos', 'Create') }}
 					</th>
-					<th v-tooltip="t('groupfolders', 'Delete')" class="state-column">
-						{{ t('groupfolders', 'Delete') }}
+					<th v-tooltip="t('grouprepos', 'Delete')" class="state-column">
+						{{ t('grouprepos', 'Delete') }}
 					</th>
-					<th v-tooltip="t('groupfolders', 'Share')" class="state-column">
-						{{ t('groupfolders', 'Share') }}
+					<th v-tooltip="t('grouprepos', 'Share')" class="state-column">
+						{{ t('grouprepos', 'Share') }}
 					</th>
 					<th class="state-column" />
 				</tr>
@@ -55,7 +55,7 @@
 						<NcAvatar user="admin" :size="24" />
 					</td>
 					<td class="username">
-						{{ t('groupfolders', 'You') }}
+						{{ t('grouprepos', 'You') }}
 					</td>
 					<td class="state-column">
 						<AclStateButton :state="getState(OC.PERMISSION_READ, model.permissions, 1)" :read-only="true" />
@@ -115,7 +115,7 @@
 					<td class="state-column">
 						<NcButton v-if="item.inherited === false"
 							type="tertiary"
-							:v-tooltip="t('groupfolders', 'Remove access rule')"
+							:v-tooltip="t('grouprepos', 'Remove access rule')"
 							:aria-label="t('groupfolders', 'Remove access rule')"
 							@click="removeAcl(item)">
 							<template #icon>
@@ -131,7 +131,7 @@
 			<template #icon>
 				<Plus :size="16" />
 			</template>
-			{{ t('groupfolders', 'Add advanced permission rule') }}
+			{{ t('grouprepos', 'Add advanced permission rule') }}
 		</NcButton>
 		<NcMultiselect v-if="isAdmin && !loading"
 			v-show="showAclCreate"
@@ -141,7 +141,7 @@
 			:reset-after="true"
 			:loading="isSearching"
 			:internal-search="false"
-			:placeholder="t('groupfolders', 'Select a user or group')"
+			:placeholder="t('grouprepos', 'Select a user or group')"
 			track-by="unique"
 			@select="createAcl"
 			@search-change="searchMappings">
@@ -198,7 +198,7 @@ export default {
 			aclEnabled: false,
 			aclCanManage: false,
 			showAclCreate: false,
-			groupFolderId: null,
+			groupRepoId: null,
 			loading: false,
 			isSearching: false,
 			options: [],
@@ -251,14 +251,14 @@ export default {
 				this.inheritedAclsById = data.inheritedAclsById
 				this.aclEnabled = data.aclEnabled
 				this.aclCanManage = data.aclCanManage
-				this.groupFolderId = data.groupFolderId
+				this.groupRepoId = data.groupRepoId
 				this.loading = false
 				this.searchMappings('')
 			})
 		},
 		getFullDisplayName(displayName, type) {
 			if (type === 'group') {
-				return `${displayName} (${t('groupfolders', 'Group')})`
+				return `${displayName} (${t('grouprepos', 'Group')})`
 			}
 
 			return displayName
@@ -269,7 +269,7 @@ export default {
 			}
 			searchRequestCancelSource = axios.CancelToken.source()
 			this.isSearching = true
-			axios.get(generateUrl(`apps/groupfolders/folders/${this.groupFolderId}/search`) + '?format=json&search=' + query, {
+			axios.get(generateUrl(`apps/grouprepos/folders/${this.groupRepoId}/search`) + '?format=json&search=' + query, {
 				cancelToken: searchRequestCancelSource.token,
 			}).then((result) => {
 				this.isSearching = false
@@ -295,7 +295,7 @@ export default {
 				})
 			}).catch((error) => {
 				if (!axios.isCancel(error)) {
-					console.error('Failed to l search results for groupfolder ACL')
+					console.error('Failed to l search results for grouprepo ACL')
 				}
 			})
 		},
@@ -356,11 +356,11 @@ export default {
 </script>
 
 <style scoped>
-	#groupfolder-acl-container {
+	#grouprepos-acl-container {
 		margin-bottom: 20px;
 	}
 
-	.groupfolder-entry {
+	.grouprepos-entry {
 		height: 44px;
 		white-space: normal;
 		display: inline-flex;
@@ -374,7 +374,7 @@ export default {
 		padding: 16px;
 	}
 
-	.groupfolder-entry .username {
+	.grouprepos-entry .username {
 		padding: 0 8px;
 		overflow: hidden;
 		white-space: nowrap;

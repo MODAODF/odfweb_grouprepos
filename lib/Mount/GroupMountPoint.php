@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\GroupFolders\Mount;
+namespace OCA\GroupRepos\Mount;
 
 use OC\Files\Mount\MountPoint;
 use OCP\Files\Mount\ISystemMountPoint;
@@ -34,7 +34,7 @@ class GroupMountPoint extends MountPoint implements ISystemMountPoint {
 	}
 
 	public function getMountType() {
-		return 'group';
+		return 'grouprepos';
 	}
 
 	public function getFolderId(): int {
@@ -42,6 +42,6 @@ class GroupMountPoint extends MountPoint implements ISystemMountPoint {
 	}
 
 	public function getSourcePath(): string {
-		return '/__groupfolders/' . $this->getFolderId();
+		return '/__grouprepos/' . $this->getFolderId();
 	}
 }

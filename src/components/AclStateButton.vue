@@ -21,12 +21,12 @@
   -->
 <template>
 	<div v-if="readOnly">
-		<NcButton v-if="!isAllowed" v-tooltip="t('groupfolders', 'Denied')" :title="t('groupfolders', 'Denied')" :aria-label="t('groupfolders', 'Access denied')">
+		<NcButton v-if="!isAllowed" v-tooltip="t('grouprepos', 'Denied')" :title="t('grouprepos', 'Denied')" :aria-label="t('grouprepos', 'Access denied')">
 			<template #icon>
 				<Cancel :size="16" />
 			</template>
 		</NcButton>
-		<NcButton v-else v-tooltip="t('groupfolders', 'Allowed')" :title="t('groupfolders', 'Allowed')" :aria-label="t('groupfolders', 'Access allowed')">
+		<NcButton v-else v-tooltip="t('grouprepos', 'Allowed')" :title="t('grouprepos', 'Allowed')" :aria-label="t('grouprepos', 'Access allowed')">
 			<template #icon>
 				<Check :size="16" />
 			</template>
@@ -41,19 +41,19 @@
 				:checked="state === STATES.INHERIT_ALLOW || state === STATES.INHERIT_DENY"
 				:disabled="disabled"
 				@change="$emit('update', STATES.INHERIT_ALLOW)">
-				{{ t('groupfolders', 'Inherit permission') }}
+				{{ t('grouprepos', 'Inherit permission') }}
 			</NcActionRadio>
 			<NcActionRadio name="state"
 				:check="state === STATES.SELF_DENY"
 				:disabled="disabled"
 				@change="$emit('update', STATES.SELF_DENY)">
-				{{ t('groupfolders', 'Deny') }}
+				{{ t('grouprepos', 'Deny') }}
 			</NcActionRadio>
 			<NcActionRadio name="state"
 				:check="state === STATES.SELF_ALLOW"
 				:disabled="disabled"
 				@change="$emit('update', STATES.SELF_ALLOW)">
-				{{ t('groupfolders', 'Allow') }}
+				{{ t('grouprepos', 'Allow') }}
 			</NcActionRadio>
 		</NcActions>
 	</div>

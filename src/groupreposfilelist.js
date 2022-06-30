@@ -12,23 +12,23 @@
 $(document).ready(function () {
 	(function (OCA) {
 		/**
-		 * @class OCA.Files.GroupFoldersFileList
-		 * @augments OCA.Files.GroupFoldersFileList
+		 * @class OCA.Files.GroupRepossFileList
+		 * @augments OCA.Files.GroupRepossFileList
 		 *
-		 * @classdesc GroupFolders file list.
+		 * @classdesc GroupRepos file list.
 		 * Displays the list of files marked as favorites
 		 *
 		 * @param $el container element with existing markup for the #controls
 		 * and a table
 		 * @param [options] map of options, see other parameters
 		 */
-		var GroupFoldersFileList = function ($el, options) {
+		var GroupRepossFileList = function ($el, options) {
 			this.initialize($el, options);
 		};
-		GroupFoldersFileList.prototype = _.extend({}, OCA.Files.FileList.prototype,
-			/** @lends OCA.Files.GroupFoldersFileList.prototype */ {
-				id: 'groupfolderslist',
-				appName: t('files', 'GroupFolders'),
+		GroupRepossFileList.prototype = _.extend({}, OCA.Files.FileList.prototype,
+			/** @lends OCA.Files.GroupRepossFileList.prototype */ {
+				id: 'groupreposslist',
+				appName: t('files', 'GroupRepos'),
 
 				_clientSideSort: true,
 				_allowSelection: false,
@@ -41,7 +41,7 @@ $(document).ready(function () {
 					if (this.initialized) {
 						return;
 					}
-					OC.Plugins.attach('OCA.Files.GroupFoldersFileList', this);
+					OC.Plugins.attach('OCA.Files.GroupRepossFileList', this);
 					
 				},
 
@@ -76,7 +76,7 @@ $(document).ready(function () {
 					this._setCurrentDir('/', false);
 
 					this._reloadCall = $.ajax({
-						url: OC.generateUrl('/apps/groupfolders/folderlist'),
+						url: OC.generateUrl('/apps/grouprepos/folderlist'),
 						type: 'GET',
 						dataType: 'json'
 					});
@@ -97,7 +97,7 @@ $(document).ready(function () {
 				},
 			});
 
-		OCA.Files.GroupFoldersFileList = GroupFoldersFileList;
+		OCA.Files.GroupRepossFileList = GroupRepossFileList;
 	})(OCA);
 });
 

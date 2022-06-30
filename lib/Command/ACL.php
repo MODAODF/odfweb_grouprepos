@@ -21,14 +21,14 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\Command;
+namespace OCA\GroupRepos\Command;
 
-use OCA\GroupFolders\ACL\ACLManagerFactory;
-use OCA\GroupFolders\ACL\Rule;
-use OCA\GroupFolders\ACL\RuleManager;
-use OCA\GroupFolders\ACL\UserMapping\UserMapping;
-use OCA\GroupFolders\Folder\FolderManager;
-use OCA\GroupFolders\Mount\MountProvider;
+use OCA\GroupRepos\ACL\ACLManagerFactory;
+use OCA\GroupRepos\ACL\Rule;
+use OCA\GroupRepos\ACL\RuleManager;
+use OCA\GroupRepos\ACL\UserMapping\UserMapping;
+use OCA\GroupRepos\Folder\FolderManager;
+use OCA\GroupRepos\Mount\MountProvider;
 use OCP\Constants;
 use OCP\Files\IRootFolder;
 use OCP\IUserManager;
@@ -67,8 +67,8 @@ class ACL extends FolderCommand {
 
 	protected function configure() {
 		$this
-			->setName('groupfolders:permissions')
-			->setDescription('Configure advanced permissions for a configured group folder')
+			->setName('grouprepos:permissions')
+			->setDescription('Configure advanced permissions for a configured group repo')
 			->addArgument('folder_id', InputArgument::REQUIRED, 'Id of the folder to configure')
 			->addOption('enable', 'e', InputOption::VALUE_NONE, 'Enable advanced permissions for the folder')
 			->addOption('disable', 'd', InputOption::VALUE_NONE, 'Disable advanced permissions for the folder')

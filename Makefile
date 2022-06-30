@@ -1,6 +1,6 @@
 # Makefile for building the project
 
-app_name=groupfolders
+app_name=grouprepos
 project_dir=$(CURDIR)/../$(app_name)
 build_dir=$(project_dir)/build
 appstore_dir=$(build_dir)/appstore

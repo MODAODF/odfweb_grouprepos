@@ -21,10 +21,10 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\groupfolders\tests\ACL;
+namespace OCA\grouprepos\tests\ACL;
 
-use OCA\GroupFolders\ACL\Rule;
-use OCA\GroupFolders\ACL\UserMapping\IUserMapping;
+use OCA\GroupRepos\ACL\Rule;
+use OCA\GroupRepos\ACL\UserMapping\IUserMapping;
 use Test\TestCase;
 
 class RuleTest extends TestCase {

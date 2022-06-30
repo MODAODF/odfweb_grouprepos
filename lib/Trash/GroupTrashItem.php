@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\GroupFolders\Trash;
+namespace OCA\GroupRepos\Trash;
 
 use OCA\Files_Trashbin\Trash\ITrashBackend;
 use OCA\Files_Trashbin\Trash\TrashItem;
@@ -46,11 +46,11 @@ class GroupTrashItem extends TrashItem {
 		return substr_count($this->getTrashPath(), '/') === 2;
 	}
 
-	public function getGroupFolderMountPoint(): string {
+	public function getGroupRepoMountPoint(): string {
 		return $this->mountPoint;
 	}
 
 	public function getTitle(): string {
-		return $this->getGroupFolderMountPoint() . '/' . $this->getOriginalLocation();
+		return $this->getGroupRepoMountPoint() . '/' . $this->getOriginalLocation();
 	}
 }

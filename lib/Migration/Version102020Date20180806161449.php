@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\GroupFolders\Migration;
+namespace OCA\GroupRepos\Migration;
 
 use OCP\DB\ISchemaWrapper;
 use OCP\Migration\SimpleMigrationStep;
@@ -18,8 +18,8 @@ class Version102020Date20180806161449 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		if (!$schema->hasTable('group_folders')) {
-			$table = $schema->createTable('group_folders');
+		if (!$schema->hasTable('group_repos')) {
+			$table = $schema->createTable('group_repos');
 			$table->addColumn('folder_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -37,8 +37,8 @@ class Version102020Date20180806161449 extends SimpleMigrationStep {
 			$table->setPrimaryKey(['folder_id']);
 		}
 
-		if (!$schema->hasTable('group_folders_groups')) {
-			$table = $schema->createTable('group_folders_groups');
+		if (!$schema->hasTable('group_repos_groups')) {
+			$table = $schema->createTable('group_repos_groups');
 			$table->addColumn('applicable_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -57,7 +57,8 @@ class Version102020Date20180806161449 extends SimpleMigrationStep {
 				'length' => 64,
 			]);
 			$table->setPrimaryKey(['applicable_id']);
-			$table->addIndex(['group_id'], 'group_folder_value');
+			$table->addIndex(['folder_id'], 'group_repo');
+			$table->addIndex(['group_id'], 'group_repo_value');
 			$table->addUniqueIndex(['folder_id', 'group_id'], 'groups_folder_group');
 		}
 		return $schema;

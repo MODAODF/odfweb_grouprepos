@@ -21,7 +21,7 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\ACL\UserMapping;
+namespace OCA\GroupRepos\ACL\UserMapping;
 
 use OCP\IGroup;
 use OCP\IGroupManager;

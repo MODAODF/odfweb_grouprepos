@@ -23,7 +23,7 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\Migration;
+namespace OCA\GroupRepos\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
@@ -35,10 +35,10 @@ class Version802000Date20201119112624 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		$result = $this->ensureColumnIsNullable($schema, 'group_folders', 'acl');
+		$result = $this->ensureColumnIsNullable($schema, 'group_repos', 'acl');
 
 		// There might be a duplicate column group which was already indexed through being primary key in Version401001Date20190715092137
-		$table = $schema->getTable('group_folders_manage');
+		$table = $schema->getTable('group_repos_manage');
 		if ($table->hasIndex('groups_folder_manage_unique')) {
 			$table->dropIndex('groups_folder_manage_unique');
 			$result = true;

@@ -21,13 +21,13 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\DAV;
+namespace OCA\GroupRepos\DAV;
 
 use OCA\DAV\Connector\Sabre\Node;
-use OCA\GroupFolders\ACL\Rule;
-use OCA\GroupFolders\ACL\RuleManager;
-use OCA\GroupFolders\Folder\FolderManager;
-use OCA\GroupFolders\Mount\GroupMountPoint;
+use OCA\GroupRepos\ACL\Rule;
+use OCA\GroupRepos\ACL\RuleManager;
+use OCA\GroupRepos\Folder\FolderManager;
+use OCA\GroupRepos\Mount\GroupMountPoint;
 use OCP\Constants;
 use OCP\IUser;
 use OCP\IUserSession;
