@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\GroupFolders\Migration;
+namespace OCA\GroupRepos\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
@@ -20,7 +20,7 @@ class Version501000Date20190927102434 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		$table = $schema->getTable('group_folders');
+		$table = $schema->getTable('group_repos');
 		$table->changeColumn('mount_point', [
 			'notnull' => true,
 			'length' => 4000

@@ -21,7 +21,7 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\ACL;
+namespace OCA\GroupRepos\ACL;
 
 use OC\Files\Cache\Wrapper\CacheWrapper;
 use OCP\Constants;

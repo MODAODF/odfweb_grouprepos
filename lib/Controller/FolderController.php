@@ -19,11 +19,11 @@
  *
  */
 
-namespace OCA\GroupFolders\Controller;
+namespace OCA\GroupRepos\Controller;
 
 use OC\AppFramework\OCS\V1Response;
-use OCA\GroupFolders\Folder\FolderManager;
-use OCA\GroupFolders\Mount\MountProvider;
+use OCA\GroupRepos\Folder\FolderManager;
+use OCA\GroupRepos\Mount\MountProvider;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
 use OCP\Files\IRootFolder;
@@ -60,14 +60,14 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function getFolders(): DataResponse {
 		return new DataResponse($this->manager->getAllFoldersWithSize($this->getRootFolderStorageId()));
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 * @param int $id
 	 * @return DataResponse
 	 */
@@ -80,7 +80,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function addFolder(string $mountpoint): DataResponse {
 		$id = $this->manager->createFolder($mountpoint);
@@ -88,7 +88,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function removeFolder(int $id): DataResponse {
 		$folder = $this->mountProvider->getFolder($id);
@@ -100,7 +100,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function setMountPoint(int $id, string $mountPoint): DataResponse {
 		$this->manager->setMountPoint($id, $mountPoint);
@@ -108,7 +108,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function addGroup(int $id, string $group): DataResponse {
 		$this->manager->addApplicableGroup($id, $group);
@@ -116,7 +116,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function removeGroup(int $id, string $group): DataResponse {
 		$this->manager->removeApplicableGroup($id, $group);
@@ -144,7 +144,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function setPermissions(int $id, string $group, int $permissions): DataResponse {
 		$this->manager->setGroupPermissions($id, $group, $permissions);
@@ -163,7 +163,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 * @throws \OCP\DB\Exception
 	 */
 	public function setManageACL(int $id, string $mappingType, string $mappingId, bool $manageAcl): DataResponse {
@@ -172,7 +172,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function setQuota(int $id, int $quota): DataResponse {
 		$this->manager->setFolderQuota($id, $quota);
@@ -180,7 +180,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function setACL(int $id, bool $acl): DataResponse {
 		$this->manager->setFolderACL($id, $acl);
@@ -188,7 +188,7 @@ class FolderController extends OCSController {
 	}
 
 	/**
-	 * @AuthorizedAdminSetting(settings=OCA\GroupFolders\Settings\Admin)
+	 * @AuthorizedAdminSetting(settings=OCA\GroupRepos\Settings\Admin)
 	 */
 	public function renameFolder(int $id, string $mountpoint): DataResponse {
 		$this->manager->renameFolder($id, $mountpoint);
@@ -272,8 +272,8 @@ class FolderController extends OCSController {
 				"etag" => $file['etag'],
 				"path" => $file['path'],
 				"mtime" => $file['mtime'],
-				"mountType" => "group"
-	
+				"mountType" => "grouprepos"
+
 			);
 			return $templateFormatFile;
 		}, $nodes));
@@ -286,7 +286,7 @@ class FolderController extends OCSController {
 	{
 		$mounts  = $this->rootFolder->getMountsIn("");
 		$mounts = array_filter($mounts, function($mount){
-			if($mount->getMountType() == "group")
+			if($mount->getMountType() == "grouprepos")
 				return True;
 			else
 				return False;
@@ -298,7 +298,7 @@ class FolderController extends OCSController {
 			$node =  $this->rootFolder->get($path);
 			return $node;
 		}, $mounts);
-		
+
 		$files = $this->formatNodes($nodes);
 		return new JSONResponse(['files' => $files]);
 	}

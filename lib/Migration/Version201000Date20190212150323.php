@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\GroupFolders\Migration;
+namespace OCA\GroupRepos\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
@@ -17,7 +17,7 @@ class Version201000Date20190212150323 extends SimpleMigrationStep {
 		/** @var ISchemaWrapper $schema */
 		$schema = $schemaClosure();
 
-		$table = $schema->getTable('group_folders');
+		$table = $schema->getTable('group_repos');
 		if (!$table->hasColumn('acl')) {
 			$table->addColumn('acl', 'integer', [
 				// 'notnull' => true,

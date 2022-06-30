@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\GroupFolders\Migration;
+namespace OCA\GroupRepos\Migration;
 
 use Closure;
 use OCP\DB\ISchemaWrapper;
@@ -30,9 +30,9 @@ class Version401006Date20200428094708 extends SimpleMigrationStep {
 	 */
 	public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
 		$schema = $schemaClosure();
-		
-		if (!$schema->hasTable('group_folders_users')) {
-			$table = $schema->createTable('group_folders_users');
+
+		if (!$schema->hasTable('group_repos_users')) {
+			$table = $schema->createTable('group_repos_users');
 			$table->addColumn('applicable_id', 'bigint', [
 				'autoincrement' => true,
 				'notnull' => true,
@@ -51,8 +51,8 @@ class Version401006Date20200428094708 extends SimpleMigrationStep {
 				'length' => 64,
 			]);
 			$table->setPrimaryKey(['applicable_id']);
-			$table->addIndex(['folder_id'], 'group_folder_user_id');
-			$table->addIndex(['user_id'], 'group_folder_user_value');
+			$table->addIndex(['folder_id'], 'group_repo_user_id');
+			$table->addIndex(['user_id'], 'group_repo_user_value');
 			$table->addUniqueIndex(['folder_id', 'user_id'], 'groups_folder_user');
 		}
 		return $schema;

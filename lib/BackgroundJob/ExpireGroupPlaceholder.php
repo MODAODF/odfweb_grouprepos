@@ -22,7 +22,7 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\BackgroundJob;
+namespace OCA\GroupRepos\BackgroundJob;
 
 use OCP\BackgroundJob\TimedJob;
 use OCP\AppFramework\Utility\ITimeFactory;

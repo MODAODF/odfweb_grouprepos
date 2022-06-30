@@ -12,46 +12,46 @@
 	/**
 	 * Registers the favorites file list from the files app sidebar.
 	 *
-	 * @namespace OCA.Files.GroupFoldersPlugin
+	 * @namespace OCA.Files.GroupRepossPlugin
 	*/
-	OCA.Files.GroupFoldersPlugin = {
-		name: 'GroupFolders',
+	OCA.Files.GroupRepossPlugin = {
+		name: 'GroupRepos',
 
 		/**
-		 * @type OCA.Files.GroupFoldersFileList
+		 * @type OCA.Files.GroupRepossFileList
 		 */
-		groupfoldersFileList: null,
+		grouprepossFileList: null,
 
 		attach: function () {
 			var self = this;
-			$('#app-content-groupfolderslist').on('show.plugin-groupfolders', function (e) {
+			$('#app-content-groupreposslist').on('show.plugin-grouprepos', function (e) {
 				self.showFileList($(e.target));
 			});
-			$('#app-content-groupfolderslist').on('hide.plugin-groupfolders', function () {
+			$('#app-content-groupreposslist').on('hide.plugin-grouprepos', function () {
 				self.hideFileList();
 			});
 		},
 
 		detach: function () {
-			if (this.groupfoldersFileList) {
-				this.groupfoldersFileList.destroy();
-				OCA.Files.fileActions.off('setDefault.plugin-groupfolders', this._onActionsUpdated);
-				OCA.Files.fileActions.off('registerAction.plugin-groupfolders', this._onActionsUpdated);
-				$('#app-content-groupfolderslist').off('.plugin-groupfolders');
-				this.groupfoldersFileList = null;
+			if (this.grouprepossFileList) {
+				this.grouprepossFileList.destroy();
+				OCA.Files.fileActions.off('setDefault.plugin-grouprepos', this._onActionsUpdated);
+				OCA.Files.fileActions.off('registerAction.plugin-grouprepos', this._onActionsUpdated);
+				$('#app-content-groupreposslist').off('.plugin-grouprepos');
+				this.grouprepossFileList = null;
 			}
 		},
 
 		showFileList: function ($el) {
-			if (!this.groupfoldersFileList) {
-				this.groupfoldersFileList = this._createGroupFoldersFileList($el);
+			if (!this.grouprepossFileList) {
+				this.grouprepossFileList = this._createGroupRepossFileList($el);
 			}
-			return this.groupfoldersFileList;
+			return this.grouprepossFileList;
 		},
 
 		hideFileList: function () {
-			if (this.groupfoldersFileList) {
-				this.groupfoldersFileList.$fileList.empty();
+			if (this.grouprepossFileList) {
+				this.grouprepossFileList.$fileList.empty();
 			}
 		},
 
@@ -59,12 +59,12 @@
 		 * Creates the favorites file list.
 		 *
 		 * @param $el container for the file list
-		 * @return {OCA.Files.GroupFoldersFileList} file list
+		 * @return {OCA.Files.GroupRepossFileList} file list
 		 */
-		_createGroupFoldersFileList: function ($el) {
+		_createGroupRepossFileList: function ($el) {
 			var fileActions = this._createFileActions();
 			// register favorite list for sidebar section
-			return new OCA.Files.GroupFoldersFileList(
+			return new OCA.Files.GroupRepossFileList(
 				$el, {
 				fileActions: fileActions,
 				// The file list is created when a "show" event is handled,
@@ -87,8 +87,8 @@
 			if (!this._globalActionsInitialized) {
 				// in case actions are registered later
 				this._onActionsUpdated = _.bind(this._onActionsUpdated, this);
-				OCA.Files.fileActions.on('setDefault.plugin-groupfolders', this._onActionsUpdated);
-				OCA.Files.fileActions.on('registerAction.plugin-groupfolders', this._onActionsUpdated);
+				OCA.Files.fileActions.on('setDefault.plugin-grouprepos', this._onActionsUpdated);
+				OCA.Files.fileActions.on('registerAction.plugin-grouprepos', this._onActionsUpdated);
 				this._globalActionsInitialized = true;
 			}
 			// when the user clicks on a folder, redirect to the corresponding
@@ -103,9 +103,9 @@
 
 		_onActionsUpdated: function (ev) {
 			if (ev.action) {
-				this.groupfoldersFileList.fileActions.registerAction(ev.action);
+				this.grouprepossFileList.fileActions.registerAction(ev.action);
 			} else if (ev.defaultAction) {
-				this.groupfoldersFileList.fileActions.setDefault(
+				this.grouprepossFileList.fileActions.setDefault(
 					ev.defaultAction.mime,
 					ev.defaultAction.name
 				);
@@ -116,5 +116,5 @@
 
 })(OCA);
 
-OC.Plugins.register('OCA.Files.App', OCA.Files.GroupFoldersPlugin);
+OC.Plugins.register('OCA.Files.App', OCA.Files.GroupRepossPlugin);
 

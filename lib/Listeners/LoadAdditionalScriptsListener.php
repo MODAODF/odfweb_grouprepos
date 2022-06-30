@@ -24,13 +24,13 @@
 declare(strict_types=1);
 
 
-namespace OCA\GroupFolders\Listeners;
+namespace OCA\GroupRepos\Listeners;
 
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 
 class LoadAdditionalScriptsListener implements IEventListener {
 	public function handle(Event $event): void {
-		\OCP\Util::addScript('groupfolders', 'groupfolders-files');
+		\OCP\Util::addScript('grouprepos', 'grouprepos-files');
 	}
 }

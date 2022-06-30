@@ -99,8 +99,8 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
 
 	deleteFolder(folder: Folder) {
 		OC.dialogs.confirm(
-			t('groupfolders', 'Are you sure you want to delete "{folderName}" and all files inside? This operation cannot be undone', {folderName: folder.mount_point}),
-			t('groupfolders', 'Delete "{folderName}"?', {folderName: folder.mount_point}),
+			t('grouprepos', 'Are you sure you want to delete "{folderName}" and all files inside? This operation cannot be undone', {folderName: folder.mount_point}),
+			t('grouprepos', 'Delete "{folderName}"?', {folderName: folder.mount_point}),
 			confirmed => {
 				if (confirmed) {
 					this.setState({folders: this.state.folders.filter(item => item.id !== folder.id)});
@@ -260,12 +260,12 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
                     <td className="remove">
                         <a className="icon icon-delete icon-visible"
                             onClick={this.deleteFolder.bind(this, folder)}
-                            title={t('groupfolders', 'Delete')} />
+                            title={t('grouprepos', 'Delete')} />
                     </td>
                 </tr>
             });
 
-        return <div id="groupfolders-react-root"
+        return <div id="grouprepos-react-root"
             onClick={() => {
                 this.setState({ editingGroup: 0, editingUser: 0, editingMountPoint: 0 })
             }}>
@@ -273,22 +273,22 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
                 <thead>
                     <tr>
                         <th onClick={() => this.onSortClick('mount_point')}>
-                            {t('groupfolders', 'Folder name')}
+                            {t('grouprepos', 'Folder name')}
                             <SortArrow name='mount_point' value={this.state.sort}
                                 direction={this.state.sortOrder} />
                         </th>
                         <th onClick={() => this.onSortClick('groups')}>
-                            {t('groupfolders', 'Groups')}
+                            {t('grouprepos', 'Groups')}
                             <SortArrow name='groups' value={this.state.sort}
                                 direction={this.state.sortOrder} />
                         </th>
                         <th onClick={() => this.onSortClick('groups')}>
-                            {t('groupfolders', 'Users')}
+                            {t('grouprepos', 'Users')}
                             <SortArrow name='users' value={this.state.sort}
                                 direction={this.state.sortOrder} />
                         </th>
                         <th onClick={() => this.onSortClick('quota')}>
-                            {t('groupfolders', 'Quota')}
+                            {t('grouprepos', 'Quota')}
                             <SortArrow name='quota' value={this.state.sort}
                                 direction={this.state.sortOrder} />
                         </th>
@@ -305,12 +305,12 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
                                 <input
                                     className="newgroup-name"
                                     value={this.state.newMountPoint}
-                                    placeholder={t('groupfolders', 'Folder name')}
+                                    placeholder={t('grouprepos', 'Folder name')}
                                     onChange={(event) => {
                                         this.setState({ newMountPoint: event.target.value })
                                     }} />
                                 <input type="submit"
-                                    value={t('groupfolders', 'Create')} />
+                                    value={t('grouprepos', 'Create')} />
                             </form>
                         </td>
                         <td colSpan={3} />

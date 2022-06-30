@@ -21,11 +21,11 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\Command\ExpireGroup;
+namespace OCA\GroupRepos\Command\ExpireGroup;
 
 use OCA\Files_Trashbin\Expiration;
-use OCA\GroupFolders\Trash\TrashBackend;
-use OCA\GroupFolders\Versions\GroupVersionsExpireManager;
+use OCA\GroupRepos\Trash\TrashBackend;
+use OCA\GroupRepos\Versions\GroupVersionsExpireManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -46,8 +46,8 @@ class ExpireGroupVersionsTrash extends ExpireGroupVersions {
 	protected function configure() {
 		parent::configure();
 		$this
-			->setName('groupfolders:expire')
-			->setDescription('Trigger expiry of versions and trashbin for files stored in group folders');
+			->setName('grouprepos:expire')
+			->setDescription('Trigger expiry of versions and trashbin for files stored in group repos');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

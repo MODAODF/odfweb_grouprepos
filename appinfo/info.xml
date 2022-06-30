@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <info>
-	<id>groupfolders</id>
-	<name>Group folders</name>
-	<summary>Admin configured folders shared with everyone in a group</summary>
-	<description><![CDATA[Admin configured folders shared with everyone in a group.
+	<id>grouprepos</id>
+	<name>Group repos</name>
+	<summary>Admin configured folders shared by everyone in a group</summary>
+	<description><![CDATA[Admin configured folders shared by everyone in a group.
 
-Folders can be configured from *Group folders* in the admin settings.
+Folders can be configured from *Group repos* in the admin settings.
 
 After a folder is created, the admin can give access to the folder to one or more groups, control their write/sharing permissions and assign a quota for the folder.
 
-Note: Encrypting the contents of group folders is currently not supported.]]></description>
-	<version>1.0.5</version>
+Note: Encrypting the contents of group repos is currently not supported.]]></description>
+	<version>1.0.6</version>
 	<licence>agpl</licence>
-	<author>Robin Appelman,Tommy Wu</author>
-	<namespace>GroupFolders</namespace>
+	<author>Tommy Wu</author>
+	<namespace>GroupRepos</namespace>
 	<types>
 		<filesystem/>
 		<dav/>
@@ -26,39 +26,39 @@ Note: Encrypting the contents of group folders is currently not supported.]]></d
 	</dependencies>
 
 	<background-jobs>
-		<job>OCA\GroupFolders\BackgroundJob\ExpireGroupVersions</job>
-		<job>OCA\GroupFolders\BackgroundJob\ExpireGroupTrash</job>
+		<job>OCA\GroupRepos\BackgroundJob\ExpireGroupVersions</job>
+		<job>OCA\GroupRepos\BackgroundJob\ExpireGroupTrash</job>
 	</background-jobs>
 
 	<commands>
-		<command>OCA\GroupFolders\Command\ExpireGroup\ExpireGroupBase</command>
-		<command>OCA\GroupFolders\Command\ListCommand</command>
-		<command>OCA\GroupFolders\Command\ACL</command>
-		<command>OCA\GroupFolders\Command\Quota</command>
-		<command>OCA\GroupFolders\Command\Group</command>
-		<command>OCA\GroupFolders\Command\Create</command>
-		<command>OCA\GroupFolders\Command\Rename</command>
-		<command>OCA\GroupFolders\Command\Delete</command>
-		<command>OCA\GroupFolders\Command\Scan</command>
-		<command>OCA\GroupFolders\Command\Trashbin\Cleanup</command>
+		<command>OCA\GroupRepos\Command\ExpireGroup\ExpireGroupBase</command>
+		<command>OCA\GroupRepos\Command\ListCommand</command>
+		<command>OCA\GroupRepos\Command\ACL</command>
+		<command>OCA\GroupRepos\Command\Quota</command>
+		<command>OCA\GroupRepos\Command\Group</command>
+		<command>OCA\GroupRepos\Command\Create</command>
+		<command>OCA\GroupRepos\Command\Rename</command>
+		<command>OCA\GroupRepos\Command\Delete</command>
+		<command>OCA\GroupRepos\Command\Scan</command>
+		<command>OCA\GroupRepos\Command\Trashbin\Cleanup</command>
 	</commands>
 
 	<settings>
-		<admin>OCA\GroupFolders\Settings\Admin</admin>
-		<admin-section>OCA\GroupFolders\Settings\Section</admin-section>
+		<admin>OCA\GroupRepos\Settings\Admin</admin>
+		<admin-section>OCA\GroupRepos\Settings\Section</admin-section>
 	</settings>
 
 	<sabre>
 		<plugins>
-			<plugin>OCA\GroupFolders\DAV\ACLPlugin</plugin>
+			<plugin>OCA\GroupRepos\DAV\ACLPlugin</plugin>
 		</plugins>
 	</sabre>
 
 	<trash>
-		<backend for="OCA\GroupFolders\Mount\GroupFolderStorage">OCA\GroupFolders\Trash\TrashBackend</backend>
+		<backend for="OCA\GroupRepos\Mount\GroupReposStorage">OCA\GroupRepos\Trash\TrashBackend</backend>
 	</trash>
 
 	<versions>
-		<backend for="OCA\GroupFolders\Mount\GroupFolderStorage">OCA\GroupFolders\Versions\VersionsBackend</backend>
+		<backend for="OCA\GroupRepos\Mount\GroupReposStorage">OCA\GroupRepos\Versions\VersionsBackend</backend>
 	</versions>
 </info>

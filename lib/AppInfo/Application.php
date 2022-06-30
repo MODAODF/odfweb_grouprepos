@@ -19,31 +19,31 @@
  *
  */
 
-namespace OCA\GroupFolders\AppInfo;
+namespace OCA\GroupRepos\AppInfo;
 
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Files_Sharing\Event\BeforeTemplateRenderedEvent;
 use OCA\Files_Trashbin\Expiration;
-use OCA\GroupFolders\ACL\ACLManagerFactory;
-use OCA\GroupFolders\ACL\RuleManager;
-use OCA\GroupFolders\ACL\UserMapping\IUserMappingManager;
-use OCA\GroupFolders\ACL\UserMapping\UserMappingManager;
-use OCA\GroupFolders\BackgroundJob\ExpireGroupPlaceholder;
-use OCA\GroupFolders\BackgroundJob\ExpireGroupTrash as ExpireGroupTrashJob;
-use OCA\GroupFolders\BackgroundJob\ExpireGroupVersions as ExpireGroupVersionsJob;
-use OCA\GroupFolders\CacheListener;
-use OCA\GroupFolders\Command\ExpireGroup\ExpireGroupBase;
-use OCA\GroupFolders\Command\ExpireGroup\ExpireGroupVersionsTrash;
-use OCA\GroupFolders\Command\ExpireGroup\ExpireGroupVersions;
-use OCA\GroupFolders\Command\ExpireGroup\ExpireGroupTrash;
-use OCA\GroupFolders\Folder\FolderManager;
-use OCA\GroupFolders\Helper\LazyFolder;
-use OCA\GroupFolders\Listeners\LoadAdditionalScriptsListener;
-use OCA\GroupFolders\Mount\MountProvider;
-use OCA\GroupFolders\Trash\TrashBackend;
-use OCA\GroupFolders\Trash\TrashManager;
-use OCA\GroupFolders\Versions\GroupVersionsExpireManager;
-use OCA\GroupFolders\Versions\VersionsBackend;
+use OCA\GroupRepos\ACL\ACLManagerFactory;
+use OCA\GroupRepos\ACL\RuleManager;
+use OCA\GroupRepos\ACL\UserMapping\IUserMappingManager;
+use OCA\GroupRepos\ACL\UserMapping\UserMappingManager;
+use OCA\GroupRepos\BackgroundJob\ExpireGroupPlaceholder;
+use OCA\GroupRepos\BackgroundJob\ExpireGroupTrash as ExpireGroupTrashJob;
+use OCA\GroupRepos\BackgroundJob\ExpireGroupVersions as ExpireGroupVersionsJob;
+use OCA\GroupRepos\CacheListener;
+use OCA\GroupRepos\Command\ExpireGroup\ExpireGroupBase;
+use OCA\GroupRepos\Command\ExpireGroup\ExpireGroupVersionsTrash;
+use OCA\GroupRepos\Command\ExpireGroup\ExpireGroupVersions;
+use OCA\GroupRepos\Command\ExpireGroup\ExpireGroupTrash;
+use OCA\GroupRepos\Folder\FolderManager;
+use OCA\GroupRepos\Helper\LazyFolder;
+use OCA\GroupRepos\Listeners\LoadAdditionalScriptsListener;
+use OCA\GroupRepos\Mount\MountProvider;
+use OCA\GroupRepos\Trash\TrashBackend;
+use OCA\GroupRepos\Trash\TrashManager;
+use OCA\GroupRepos\Versions\GroupVersionsExpireManager;
+use OCA\GroupRepos\Versions\VersionsBackend;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -63,7 +63,7 @@ use Psr\Log\LoggerInterface;
 
 class Application extends App implements IBootstrap {
 	public function __construct(array $urlParams = []) {
-		parent::__construct('groupfolders', $urlParams);
+		parent::__construct('grouprepos', $urlParams);
 	}
 
 	public function register(IRegistrationContext $context): void {
@@ -77,7 +77,7 @@ class Application extends App implements IBootstrap {
 				return $c->get('GroupAppFolder');
 			};
 			$config = $c->get(IConfig::class);
-			$allowRootShare = $config->getAppValue('groupfolders', 'allow_root_share', 'true') === 'true';
+			$allowRootShare = $config->getAppValue('grouprepos', 'allow_root_share', 'true') === 'true';
 
 			return new MountProvider(
 				$c->getServer()->getGroupManager(),
@@ -89,7 +89,7 @@ class Application extends App implements IBootstrap {
 				$c->get(ISession::class),
 				$c->get(IMountProviderCollection::class),
 				$c->get(IDBConnection::class),
-				$c->get(ICacheFactory::class)->createLocal("groupfolders"),
+				$c->get(ICacheFactory::class)->createLocal("grouprepos"),
 				$allowRootShare
 			);
 		});
@@ -150,7 +150,7 @@ class Application extends App implements IBootstrap {
 			return new ExpireGroupBase();
 		});
 
-		$context->registerService(\OCA\GroupFolders\BackgroundJob\ExpireGroupVersions::class, function (IAppContainer $c) {
+		$context->registerService(\OCA\GroupRepos\BackgroundJob\ExpireGroupVersions::class, function (IAppContainer $c) {
 			if (interface_exists(\OCA\Files_Versions\Versions\IVersionBackend::class)) {
 				return new ExpireGroupVersionsJob(
 					$c->get(GroupVersionsExpireManager::class),
@@ -161,7 +161,7 @@ class Application extends App implements IBootstrap {
 			return new ExpireGroupPlaceholder($c->get(ITimeFactory::class));
 		});
 
-		$context->registerService(\OCA\GroupFolders\BackgroundJob\ExpireGroupTrash::class, function (IAppContainer $c) {
+		$context->registerService(\OCA\GroupRepos\BackgroundJob\ExpireGroupTrash::class, function (IAppContainer $c) {
 			if (interface_exists(\OCA\Files_Trashbin\Trash\ITrashBackend::class)) {
 				return new ExpireGroupTrashJob(
 					$c->get(TrashBackend::class),

@@ -29,13 +29,13 @@ $userSession = \OC::$server->getUserSession();
 $showgridview = $config->getUserValue($userSession->getUser()->getUID(), 'files', 'show_grid', false);
 
 // renders the controls and table headers template
-$tmpl = new OCP\Template('groupfolders', 'list', '');
+$tmpl = new OCP\Template('grouprepos', 'list', '');
 
 /*Add self resource
    css: \OC_Util::addStyle
    js : \OC_Util::addScript
 */
-OC_Util::addStyle('groupfolders', "merged", true);
+OC_Util::addStyle('grouprepos', "merged", true);
 
 // gridview not available for ie
 $tmpl->assign('showgridview', $showgridview);

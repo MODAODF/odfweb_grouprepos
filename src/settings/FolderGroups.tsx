@@ -65,10 +65,10 @@ export function FolderGroups({groups, allGroups = [], onAddGroup, removeGroup, e
 					  onClick={event => event.stopPropagation()}>
 			<thead>
 			<tr>
-				<th>{t('groupfolders', 'Group')}</th>
-				<th>{t('groupfolders', 'Write')}</th>
-				<th>{t('groupfolders', 'Share')}</th>
-				<th>{t('groupfolders', 'Delete')}</th>
+				<th>{t('grouprepos', 'Group')}</th>
+				<th>{t('grouprepos', 'Write')}</th>
+				<th>{t('grouprepos', 'Share')}</th>
+				<th>{t('grouprepos', 'Delete')}</th>
 				<th/>
 			</tr>
 			</thead>
@@ -111,7 +111,7 @@ interface GroupSelectProps {
 function GroupSelect({allGroups, onChange}: GroupSelectProps) {
 	if (allGroups.length === 0) {
 		return <div>
-			<p>{t('groupfolders', 'No other groups available')}</p>
+			<p>{t('grouprepos', 'No other groups available')}</p>
 		</div>;
 	}
 	const options = allGroups.map(group => {
@@ -126,7 +126,7 @@ function GroupSelect({allGroups, onChange}: GroupSelectProps) {
 			onChange && option && onChange(option.value)
 		}}
 		options={options}
-		placeholder={t('groupfolders', 'Add group')}
+		placeholder={t('grouprepos', 'Add group')}
 		styles={{
 			input: (provided) => ({
 				...provided,

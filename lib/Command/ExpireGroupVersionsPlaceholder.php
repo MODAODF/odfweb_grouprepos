@@ -21,7 +21,7 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\GroupFolders\Command;
+namespace OCA\GroupRepos\Command;
 
 use OC\Core\Command\Base;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,13 +34,13 @@ class ExpireGroupVersionsPlaceholder extends Base {
 
 	protected function configure() {
 		$this
-			->setName('groupfolders:expire')
-			->setDescription('Trigger expiry of versions for files stored in group folders');
+			->setName('grouprepos:expire')
+			->setDescription('Trigger expiry of versions for files stored in group repos');
 		parent::configure();
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
-		$output->writeln('<error>groupfolder version handling is only supported with Nextcloud 15 and up</error>');
+		$output->writeln('<error>grouprepo version handling is only supported with Nextcloud 15 and up</error>');
 		return 0;
 	}
 }

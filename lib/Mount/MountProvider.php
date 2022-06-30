@@ -19,13 +19,13 @@
  *
  */
 
-namespace OCA\GroupFolders\Mount;
+namespace OCA\GroupRepos\Mount;
 
 use OC\Files\Storage\Wrapper\Jail;
 use OC\Files\Storage\Wrapper\PermissionsMask;
-use OCA\GroupFolders\ACL\ACLManagerFactory;
-use OCA\GroupFolders\ACL\ACLStorageWrapper;
-use OCA\GroupFolders\Folder\FolderManager;
+use OCA\GroupRepos\ACL\ACLManagerFactory;
+use OCA\GroupRepos\ACL\ACLStorageWrapper;
+use OCA\GroupRepos\Folder\FolderManager;
 use OCP\Constants;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Config\IMountProvider;
@@ -208,7 +208,7 @@ class MountProvider implements IMountProvider {
 			'storage' => $storage,
 			'root' => $rootPath
 		]);
-		$quotaStorage = new GroupFolderStorage([
+		$quotaStorage = new GroupReposStorage([
 			'storage' => $baseStorage,
 			'quota' => $quota,
 			'folder_id' => $id,

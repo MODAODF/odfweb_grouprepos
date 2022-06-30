@@ -21,13 +21,13 @@ declare(strict_types=1);
  *
  */
 
-namespace OCA\groupfolders\tests\ACL;
+namespace OCA\grouprepos\tests\ACL;
 
 use OC\Files\Storage\Temporary;
-use OCA\GroupFolders\ACL\Rule;
-use OCA\GroupFolders\ACL\RuleManager;
-use OCA\GroupFolders\ACL\UserMapping\IUserMappingManager;
-use OCA\GroupFolders\ACL\UserMapping\UserMapping;
+use OCA\GroupRepos\ACL\Rule;
+use OCA\GroupRepos\ACL\RuleManager;
+use OCA\GroupRepos\ACL\UserMapping\IUserMappingManager;
+use OCA\GroupRepos\ACL\UserMapping\UserMapping;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Log\Audit\CriticalActionPerformedEvent;
 use OCP\IUser;
