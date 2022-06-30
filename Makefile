@@ -71,6 +71,11 @@ appstore: clean build/main.js
 	--exclude=/tsconfig.json \
 	--exclude=/vendor \
 	--exclude=/webpack.* \
+	--exclude=/build \
+	--exclude=/.eslintrc.js \
+	--exclude=/krankerl.toml \
+	--exclude=/.nextcloudignore \
+	--exclude=/.php_cs-fixer.dist.php \
 	$(project_dir)/ $(sign_dir)/$(app_name)
 	tar -czf $(build_dir)/$(app_name)-$(version)-$(BRANCH).tar.gz \
 		-C $(sign_dir) $(app_name)
