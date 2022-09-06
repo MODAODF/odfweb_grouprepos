@@ -65,6 +65,11 @@ use Psr\Log\LoggerInterface;
 class Application extends App implements IBootstrap {
 	public function __construct(array $urlParams = []) {
 		parent::__construct('grouprepos', $urlParams);
+
+		// cleanup app.php
+		if (file_exists(dirname(__FILE__,3)."/appinfo/app.php")) {
+			unlink(dirname(__FILE__,3)."/appinfo/app.php");
+		}
 	}
 
 	public const APPS_USE_GROUPFOLDERS = [
