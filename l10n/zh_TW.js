@@ -22,7 +22,6 @@ OC.L10N.register(
     "Remove access rule" : "移除存取規則",
     "Add advanced permission rule" : "加入進階權限規則",
     "Select a user or group" : "選擇一個使用者或群組",
-    "Group" : "群組",
     "Open group repo" : "開啟群組資料夾",
     "List of group repos." : "群組資料夾清單。",
     "Add group" : "新增群組",
@@ -36,7 +35,6 @@ OC.L10N.register(
     "Quota" : "容量限額",
     "Advanced Permissions" : "進階權限",
     "They will only have access to Grouprepos for which they have advanced permissions." : "他們僅能存取他們擁有進階權限的群組資料夾。",
-    "Groups" : "群組",
     "Storage is temporarily not available" : "空間暫時無法使用",
     "Storage invalid" : "無效的儲存空間",
     "Unknown error" : "未知的錯誤",
@@ -229,6 +227,14 @@ OC.L10N.register(
     "Missing permissions to edit from here." : "您沒有在此編輯的權限",
     "Cancel upload" : "取消上傳",
     "%s of %s used" : "在 %s 中使用了%s ",
-    "%1$s%% of %2$s used" : "在%2$s使用了%1$s%%"
+    "%1$s%% of %2$s used" : "在%2$s使用了%1$s%%",
+    "Users/groups that can manage": "可瀏覽的用戶/群組",
+    "No other users available": "無其他使用者",
+    "No other groups available": "無其他群組",
+    "Add user":"新增用戶",
+    "Groups": "可瀏覽的群組",
+    "Group": "可瀏覽的群組",
+    "Users": "可瀏覽的使用者",
+    "User": "可瀏覽的使用者"
 },
 "nplurals=1; plural=0;");
