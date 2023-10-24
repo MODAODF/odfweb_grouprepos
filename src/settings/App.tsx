@@ -305,6 +305,7 @@ export class App extends Component<{}, AppState> implements OC.Plugin<OC.Search.
                                 <input
                                     className="newgroup-name"
                                     value={this.state.newMountPoint}
+                                    title={t('grouprepos', 'Folder name')}
                                     placeholder={t('grouprepos', 'Folder name')}
                                     onChange={(event) => {
                                         this.setState({ newMountPoint: event.target.value })
