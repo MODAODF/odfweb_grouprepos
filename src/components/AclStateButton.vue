@@ -127,13 +127,13 @@ export default {
 		label() {
 			switch (this.state) {
 			case STATES.INHERIT_DENY:
-				return t('groupfolders', 'Denied (Inherited permission)')
+				return t('grouprepos', 'Denied (Inherited permission)')
 			case STATES.INHERIT_ALLOW:
-				return t('groupfolders', 'Allowed (Inherited permission)')
+				return t('grouprepos', 'Allowed (Inherited permission)')
 			case STATES.SELF_DENY:
-				return t('groupfolders', 'Denied')
+				return t('grouprepos', 'Denied')
 			case STATES.SELF_ALLOW:
-				return t('groupfolders', 'Allowed')
+				return t('grouprepos', 'Allowed')
 			}
 			return ''
 		},

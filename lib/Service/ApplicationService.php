@@ -3,7 +3,7 @@
 /**
  * @author Baptiste Fotia <baptiste.fotia@arawa.fr> for Arawa (https://arawa.fr)
  *
- * GroupFolders
+ * GroupRepos
  *
  * This code is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -19,9 +19,9 @@
  *
  */
 
-namespace OCA\GroupFolders\Service;
+namespace OCA\GroupRepos\Service;
 
-use OCA\GroupFolders\AppInfo\Application;
+use OCA\GroupRepos\AppInfo\Application;
 use OCP\App\IAppManager;
 
 class ApplicationService {
@@ -32,11 +32,11 @@ class ApplicationService {
 	}
 
 	/**
-	 * Check that all apps that depend on Groupfolders are installed
+	 * Check that all apps that depend on Grouprepos are installed
 	 * @return boolean true if all apps are installed, false otherwise.
 	 */
 	public function checkAppsInstalled(): bool {
-		$diffApps = array_diff(Application::APPS_USE_GROUPFOLDERS, $this->appManager->getInstalledApps());
+		$diffApps = array_diff(Application::APPS_USE_GROUPREPOS, $this->appManager->getInstalledApps());
 
 		return empty($diffApps);
 	}

@@ -59,7 +59,7 @@ class ListCommand extends Base {
 		$this
 			->setName('grouprepos:list')
 			->setDescription('List the configured group repos')
-			->addOption('user', 'u', InputArgument::OPTIONAL, "List group folders applicable for a user");
+			->addOption('user', 'u', InputArgument::OPTIONAL, "List group repos applicable for a user");
 		parent::configure();
 	}
 

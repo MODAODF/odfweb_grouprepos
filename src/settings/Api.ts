@@ -58,7 +58,7 @@ export class Api {
 			.then((data: OCSResult<Group[]>) => data.ocs.data)
 	}
 
-	// Returns all groups that have been granted delegated admin or subadmin rights on groupfolders
+	// Returns all groups that have been granted delegated admin or subadmin rights on grouprepos
 	listDelegatedGroups(classname: string): Thenable<Group[]> {
 		return axios.get(this.getUrl('/delegation/authorized-groups'), { params: { classname } })
 			.then((data: AxiosOCSResult<Group[]>) => {

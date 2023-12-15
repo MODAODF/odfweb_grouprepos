@@ -116,7 +116,7 @@
 						<NcButton v-if="item.inherited === false"
 							type="tertiary"
 							:v-tooltip="t('grouprepos', 'Remove access rule')"
-							:aria-label="t('groupfolders', 'Remove access rule')"
+							:aria-label="t('grouprepos', 'Remove access rule')"
 							@click="removeAcl(item)">
 							<template #icon>
 								<Close :size="16" />

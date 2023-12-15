@@ -72,7 +72,7 @@ class Application extends App implements IBootstrap {
 		}
 	}
 
-	public const APPS_USE_GROUPFOLDERS = [
+	public const APPS_USE_GROUPREPOS = [
 		'workspace'
 	];
 
@@ -88,7 +88,7 @@ class Application extends App implements IBootstrap {
 			};
 			$config = $c->get(IConfig::class);
 			$allowRootShare = $config->getAppValue('grouprepos', 'allow_root_share', 'true') === 'true';
-			$enableEncryption = $config->getAppValue('groupfolders', 'enable_encryption', 'false') === 'true';
+			$enableEncryption = $config->getAppValue('grouprepos', 'enable_encryption', 'false') === 'true';
 
 			return new MountProvider(
 				$c->getServer()->getGroupManager(),

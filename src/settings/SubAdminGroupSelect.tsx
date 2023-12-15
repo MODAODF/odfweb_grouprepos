@@ -90,7 +90,7 @@ class SubAdminGroupSelect extends Component<SubAdminGroupSelectProps> {
 			})}
 			className="delegated-admins-select"
 			options={options}
-			placeholder={t('groupfolders', 'Add group')}
+			placeholder={t('grouprepos', 'Add group')}
 			styles={{
 				input: (provided) => ({
 					...provided,
