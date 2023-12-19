@@ -218,7 +218,7 @@ class Application extends App implements IBootstrap {
 			'script' => 'list.php',
 			'order' => 25,
 			'name' => "群組資料夾",
-			'icon' => "grouprepos"
+			'icon' => "group"
 		]);
 	}
 
