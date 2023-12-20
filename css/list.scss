@@ -1,3 +1,7 @@
-.nav-icon-grouprepos {
-    @include icon-color("app-dark", "grouprepos", $color-black);
-  }
+// .nav-icon-group {
+//     @include icon-color("app-dark", "grouprepos", $color-black);
+//   }
+
+.grouprepos_filelist {
+  display: flex !important;
+}
