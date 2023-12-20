@@ -8,9 +8,8 @@
  *
  */
 
-/* eslint-disable */
 // HACK: this piece needs to be loaded AFTER the files app (for unit tests)
-$(document).ready(function () {
+window.addEventListener('DOMContentLoaded', function () {
 	(function (OCA) {
 		/**
 		 * @class OCA.Files.GroupRepossFileList
@@ -19,7 +18,7 @@ $(document).ready(function () {
 		 * @classdesc GroupRepos file list.
 		 * Displays the list of files marked as favorites
 		 *
-		 * @param $el container element with existing markup for the #controls
+		 * @param $el container element with existing markup for the .files-controls
 		 * and a table
 		 * @param [options] map of options, see other parameters
 		 */
@@ -51,9 +50,9 @@ $(document).ready(function () {
 						const dir = this.getCurrentDirectory();
 						if (dir === '/') {
 							// root has special permissions
-							this.$el.find('#emptycontent').toggleClass('hidden', !this.isEmpty);
-							this.$el.find('#filestable thead th').toggleClass('hidden', this.isEmpty);
-							this.$el.find('#emptycontent').html('<div class="nav-icon-grouprepos"></div>' +
+							this.$el.find('.emptyfilelist.emptycontent').toggleClass('hidden', !this.isEmpty);
+							this.$el.find('.files-filestable thead th').toggleClass('hidden', this.isEmpty);
+							this.$el.find('.emptyfilelist.emptycontent').html('<div class="icon-group"></div>' +
 								'<h2>' + t('grouprepos', 'No Group Repo') + '</h2>');
 						}
 						else {
@@ -72,7 +71,7 @@ $(document).ready(function () {
 
 					reload: function () {
 						this.showMask();
-						if (this._reloadCall) {
+						if (this._reloadCall?.abort) {
 							this._reloadCall.abort();
 						}
 
